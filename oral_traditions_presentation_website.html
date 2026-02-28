@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oral Traditions — V2 (Personal)</title>
+
+  <!-- Google Fonts (More Minimal / Modern) -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Muted, calmer palette */
+      --bg-main: #020617;
+      --bg-card: rgba(12,18,32,0.94);
+      --accent-main: #7aa2c9;   /* soft steel blue */
+      --accent-soft: #9ca3af;   /* cool grey */
+      --accent-warm: #d6c7a1;   /* muted sand */
+      --text-main: #f3f4f6;
+      --text-soft: #b6bcc9;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Space Grotesk", sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top, #020617, #020617 45%, #010314),
+        linear-gradient(135deg, #020617, #020617);
+      color: var(--text-main);
+      overflow: hidden;
+    }
+
+    /* Slides Container */
+    .slides {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      transition: transform 0.9s cubic-bezier(.77,0,.18,1);
+    }
+
+    /* Individual Slide */
+    .slide {
+      min-width: 100vw;
+      height: 100vh;
+      padding: clamp(70px, 7vw, 110px) 12vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      border-right: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* Subtle Texture */
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    /* Reveal Animation */
+    .slide > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.65s ease;
+    }
+
+    .slide.active > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Typography */
+    h1, h2 {
+      font-family: "DM Serif Display", serif;
+      letter-spacing: 0.8px;
+      margin-bottom: 26px;
+    }
+
+    h1 {
+      font-size: clamp(3.3rem, 6vw, 5.2rem);
+      color: var(--accent-warm);
+    }
+
+    h2 {
+      font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+      color: var(--accent-main);
+    }
+
+    p {
+      font-size: clamp(1.15rem, 1.45vw, 1.4rem);
+      line-height: 1.8;
+      max-width: 900px;
+      color: var(--text-soft);
+      margin-bottom: 26px;
+    }
+
+    ul {
+      margin-left: 26px;
+      margin-top: 10px;
+      max-width: 900px;
+    }
+
+    li {
+      font-size: clamp(1.1rem, 1.35vw, 1.3rem);
+      line-height: 1.7;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    li::marker {
+      color: var(--accent-main);
+    }
+
+    /* Title Slide */
+    .title {
+      text-align: center;
+      align-items: center;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: var(--text-soft);
+      margin-top: 16px;
+      letter-spacing: 0.4px;
+    }
+
+    /* Accent Line */
+    .divider {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-main), var(--accent-soft));
+      margin: 22px 0 32px;
+      border-radius: 2px;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 16px;
+      z-index: 200;
+    }
+
+    .nav button {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text-main);
+      padding: 10px 24px;
+      border-radius: 36px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      transition: all 0.25s ease;
+    }
+
+    .nav button:hover {
+      background: rgba(122,162,201,0.25);
+      transform: translateY(-2px);
+    }
+
+    /* Progress Bar */
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-main), var(--accent-warm));
+      width: 0%;
+      transition: width 0.35s ease;
+      z-index: 300;
+    }
+
+    /* Footer Tag */
+    .tag {
+      position: absolute;
+      bottom: 20px;
+      right: 36px;
+      font-size: 0.8rem;
+      opacity: 0.45;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="slides" id="slides">
+
+  <!-- Slide 1 -->
+  <section class="slide title active">
+    <h1>Oral Traditions</h1>
+    <div class="divider"></div>
+    <h2>Creation & Trickster Stories</h2>
+    <p class="subtitle">Ivan Samosseiko • Literary Studies 11</p>
+    <div class="tag">V2 • Personal Edition</div>
+  </section>
+
+  <!-- Slide 2 -->
+  <section class="slide">
+    <h2>What Is Oral Tradition?</h2>
+    <div class="divider"></div>
+    <p>
+      Oral tradition is the practice of passing knowledge, history, and values
+      through spoken stories rather than writing. Elders and storytellers protect
+      these stories to keep culture alive.
+    </p>
+    <ul>
+      <li>Shared through generations</li>
+      <li>Protects history and identity</li>
+      <li>Builds community connection</li>
+      <li>Preserves Indigenous knowledge</li>
+    </ul>
+    <div class="tag">01</div>
+  </section>
+
+  <!-- Slide 3 -->
+  <section class="slide">
+    <h2>Types of Indigenous Stories</h2>
+    <div class="divider"></div>
+    <p>
+      Indigenous oral traditions use different story types to explain the world,
+      teach lessons, and guide behaviour.
+    </p>
+    <ul>
+      <li><b>Creation Stories:</b> How life and land began</li>
+      <li><b>Origin Stories:</b> Where people came from</li>
+      <li><b>Trickster Stories:</b> Learning through humour</li>
+    </ul>
+    <div class="tag">02</div>
+  </section>
+
+  <!-- Slide 4 -->
+  <section class="slide">
+    <h2>Creation & Trickster Stories</h2>
+    <div class="divider"></div>
+    <p>
+      These stories explain nature, human behaviour, and spiritual beliefs. In
+      many Haida stories, Raven brings light to the world and shapes the land.
+    </p>
+    <ul>
+      <li>Respect for land and animals</li>
+      <li>Balance and responsibility</li>
+      <li>Learning from mistakes</li>
+      <li>Spiritual connection</li>
+    </ul>
+    <div class="tag">03</div>
+  </section>
+
+  <!-- Slide 5 -->
+  <section class="slide">
+    <h2>How Stories Are Told</h2>
+    <div class="divider"></div>
+    <p>
+      Stories are shared during ceremonies, gatherings, and family events.
+      Although details may change, the main meaning stays strong.
+    </p>
+    <ul>
+      <li>Led by Elders</li>
+      <li>Use rhythm and repetition</li>
+      <li>Adapted for audiences</li>
+      <li>Often in traditional languages</li>
+    </ul>
+    <div class="tag">04</div>
+  </section>
+
+  <!-- Slide 6 -->
+  <section class="slide">
+    <h2>Characters & Conflicts</h2>
+    <div class="divider"></div>
+    <p>
+      Many oral stories take place in ancient times, when animals, humans, and
+      spirits could communicate.
+    </p>
+    <ul>
+      <li>Trickster figures and spirits</li>
+      <li>Forests, oceans, sky worlds</li>
+      <li>Conflicts: pride, greed, curiosity</li>
+      <li>Resolution through balance</li>
+    </ul>
+    <div class="tag">05</div>
+  </section>
+
+  <!-- Slide 7 -->
+  <section class="slide">
+    <h2>Why These Stories Matter</h2>
+    <div class="divider"></div>
+    <p>
+      Oral traditions continue to teach respect, responsibility, and connection
+      to nature. They help protect language and identity.
+    </p>
+    <ul>
+      <li>Build cultural pride</li>
+      <li>Encourage respect</li>
+      <li>Connect generations</li>
+      <li>Support reconciliation</li>
+    </ul>
+    <div class="tag">06</div>
+  </section>
+
+  <!-- Slide 8 -->
+  <section class="slide">
+    <h2>Conclusion & Works Cited</h2>
+    <div class="divider"></div>
+    <p>
+      Oral traditions are living systems of knowledge that connect people to
+      their ancestors, land, and future generations.
+    </p>
+
+    <h3 style="margin-top:32px;color:var(--accent-warm)">Works Cited (MLA)</h3>
+    <ul>
+      <li>First Nations Education Steering Committee. “Oral Traditions.” FNESC.</li>
+      <li>Indigenous Foundations. “Oral Traditions.” University of British Columbia.</li>
+      <li>King, Thomas. <i>The Truth About Stories</i>. CBC Massey Lectures, 2003.</li>
+    </ul>
+    <div class="tag">07</div>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button onclick="prev()">◀ Prev</button>
+  <button onclick="next()">Next ▶</button>
+</div>
+
+<script>
+  const slides = document.getElementById("slides");
+  const slideEls = document.querySelectorAll(".slide");
+  const total = slideEls.length;
+  const progress = document.getElementById("progress");
+
+  let index = 0;
+
+  function update() {
+    slides.style.transform = `translateX(-${index * 100}vw)`;
+    progress.style.width = ((index + 1) / total) * 100 + "%";
+
+    slideEls.forEach((s, i) => {
+      s.classList.toggle("active", i === index);
+    });
+  }
+
+  function next() {
+    if (index < total - 1) {
+      index++;
+      update();
+    }
+  }
+
+  function prev() {
+    if (index > 0) {
+      index--;
+      update();
+    }
+  }
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") next();
+    if (e.key === "ArrowLeft") prev();
+  });
+
+  update();
+</script>
+
+</body>
+</html>
